@@ -12,7 +12,36 @@ app.set('port', config.bind.port);
 var app_title = util.format("%s (%s)", pkgJson.name, pkgJson.description);
 process.title = app_title;
 
-var server = app.listen(app.get('port'), app.get('host'), function () {
-    debug(util.format("%s listening on http://%s:%s", app_title, app.get('host'), app.get('port')));
-    console.log(util.format("%s listening on http://%s:%s", app_title, app.get('host'), app.get('port')));
-});
+var dbInstall =
+    "CREATE TABLE IF NOT EXISTS users (" +
+    "id INT(10) NOT NULL AUTO_INCREMENT," +
+    "username VARCHAR(40) NOT NULL UNIQUE," +
+    "password VARCHAR(40) NOT NULL," +
+    "PRIMARY KEY (id));",
+    dbInstall2 =
+    "CREATE TABLE IF NOT EXISTS tasks (" +
+    "id INT(10) NOT NULL AUTO_INCREMENT," +
+    "user_id INT(10) NOT NULL," +
+    "task VARCHAR(40) NOT NULL," +
+    "description LONGTEXT," +
+    "priority INT(10) NOT NULL DEFAULT 0," +
+    "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE," +
+    "PRIMARY KEY (id));" +
+    "";
+
+app.settings.mysql.query(
+    dbInstall,
+    function(err) {
+        if (err) throw err;
+        app.settings.mysql.query(
+            dbInstall2,
+            function(err){
+                if (err) throw err;
+                var server = app.listen(app.get('port'), app.get('host'), function () {
+                    debug(util.format("%s listening on http://%s:%s", app_title, app.get('host'), app.get('port')));
+                    console.log(util.format("%s listening on http://%s:%s", app_title, app.get('host'), app.get('port')));
+                });
+            }
+        )
+    }
+);

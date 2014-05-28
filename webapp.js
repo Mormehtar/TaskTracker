@@ -16,8 +16,8 @@ var errorHandler = require('errorhandler');
 var responseTime = require('response-time');
 
 // Uncomment next lines to enable persistent session support (MySQL database required)
-// var session = require('express-session');
-// var MySQLSessionStore = require('express-mysql-session');
+var session = require('express-session');
+var MySQLSessionStore = require('express-mysql-session');
 
 // Detect running mode and create Express4 application object
 var env = process.env.NODE_ENV || 'development';
@@ -50,12 +50,12 @@ app.locals.codebaseVer = pkgJson.version;
 app.use(cookieParser());
 
 // Uncomment next lines to enable MySQL support
-// var mySqlPool  = mysql.createPool(config.mysql);
-// app.set("mysql", mySqlPool);
+var mySqlPool  = mysql.createPool(config.mysql);
+app.set("mysql", mySqlPool);
 
 // Uncomment next lines to enable persistent session support
-// config.session.store = new MySQLSessionStore(config.mysql);
-// app.use(session(config.session));
+config.session.store = new MySQLSessionStore(config.mysql);
+app.use(session(config.session));
 
 // Enable request body parsing (to enable POST requests handling)
 app.use(bodyParser());

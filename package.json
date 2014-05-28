@@ -1,6 +1,6 @@
 {
-    "name": "skeleton",
-    "version": "1.0.0",
+    "name": "TaskTracker",
+    "version": "0.1.0",
     "description": "Express 4 webapp skeleton",
     "license": "MIT",
     "scripts": {
@@ -11,7 +11,7 @@
         "type": "git",
         "url": "https://github.com/sitnin/skeleton.git"
     },
-    "author": "Gregory Sitnin <greg@sitnin.com>",
+    "author": "Ilya Volkov <mormehtar@gmail.com>",
     "dependencies": {
         "express": "~4.1.1",
         "nunjucks": "~1.0.4",
