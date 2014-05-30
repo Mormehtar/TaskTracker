@@ -16,7 +16,7 @@ var dbInstall =
     "CREATE TABLE IF NOT EXISTS users (" +
     "id INT(10) NOT NULL AUTO_INCREMENT," +
     "username VARCHAR(40) NOT NULL UNIQUE," +
-    "password VARCHAR(60) NOT NULL," +
+    "password VARCHAR(32) NOT NULL," +
     "PRIMARY KEY (id));",
     dbInstall2 =
     "CREATE TABLE IF NOT EXISTS tasks (" +

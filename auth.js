@@ -1,6 +1,6 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var bcrypt = require("bcrypt");
+var crypto = require("crypto");
 
 function config (db, config) {
 
@@ -26,40 +26,37 @@ function config (db, config) {
 
     passport.use(new LocalStrategy(function(username, password, done) {
         process.nextTick(function() {
-//                        TODO Use faster hash!
-            bcrypt.hash(password, config.salt, function(err, hashed_password){
-                if (err) return done(err);
-                return db.query(
-                    "SELECT * FROM users WHERE username = ?",
-                    [username],
-                    function(err, rows){
-                        if (err) {
-                            return done(err);
-                        }
-                        if (rows.length) {
-                            if (hashed_password == rows[0].password){
-                                return done(null, rows[0]);
-                            } else {
-                                return done(null, false);
-                            }
-                        } else {
-                            return db.query(
-                                "INSERT INTO users (username, password)" +
-                                "VALUES (?, ?)",
-                                [username, hashed_password],
-                                function(err, rows){
-                                    if (err){
-                                        return done(err);
-                                    } else {
-                                        return done(null, {"id": rows.insertId, "username":username});
-                                    }
-
-                                }
-                            );
-                        }
+            var hashed_password = crypto.createHash('md5').update(config.salt + password).digest("hex");
+            db.query(
+                "SELECT * FROM users WHERE username = ?",
+                [username],
+                function(err, rows){
+                    if (err) {
+                        return done(err);
                     }
-                )
-            });
+                    if (rows.length) {
+                        if (hashed_password == rows[0].password){
+                            return done(null, rows[0]);
+                        } else {
+                            return done(null, false);
+                        }
+                    } else {
+                        return db.query(
+                            "INSERT INTO users (username, password)" +
+                            "VALUES (?, ?)",
+                            [username, hashed_password],
+                            function(err, rows){
+                                if (err){
+                                    return done(err);
+                                } else {
+                                    return done(null, {"id": rows.insertId, "username":username});
+                                }
+
+                            }
+                        );
+                    }
+                }
+            )
         });
     }));
 
