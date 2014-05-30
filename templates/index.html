@@ -1,9 +1,24 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
     <head>
-        <title>Skeleton</title>
+        <title>Welcome {{ name }}!</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
     <body>
+        <div><a href="/logout" style="float: right">Разлогиниться!</a></div>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 70%">
+                    <div id="task">
+                        {% include "task.html" %}
+                    </div>
+                </td>
+                <td style="width: 30%">
+                    <div id="tasklist">
+                        {% include "tasklist.html" %}
+                    </div>
+                </td>
+            </tr>
+        </table>
     </body>
 </html>
