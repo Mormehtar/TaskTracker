@@ -1,8 +1,9 @@
-<form action="." method="post">
+<form id="taskform">
     <div>Приоритет</div>
-    <div><input type="number" value="{{ task.prority }}"></div>
+    <div><input name="priority" type="number" value="{{ priority }}"></div>
     <div>Задача</div>
-    <div><input type="text" maxlength="40" value="{{ task.task }}"></div>
+    <div><input name="task" type="text" maxlength="40" value="{{ task }}"></div>
     <div>Описание</div>
-    <div><textarea cols="40" rows="10">{{ task.descrition }}</textarea></div>
+    <div><textarea name="description" cols="40" rows="10">{{ description }}</textarea></div>
+    <input name="id" type="hidden" value="{{ id }}">
 </form>

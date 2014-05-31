@@ -16,6 +16,55 @@ function result(app){
         );
     });
 
+    router.get("/tasklist", function(req, res){
+        app.settings.mysql.query(
+            "SELECT * " +
+            "FROM tasks " +
+            "WHERE user_id=? " +
+            "ORDER BY priority DESC;",
+            [req.user.id],
+            function(err, result){
+                if(err) throw err;
+                console.log(result);
+                res.render(
+                    "tasklist.html",
+                    {tasklist: result}
+                );
+            }
+        );
+    });
+
+    router.post("/save_task", function(req, res){
+        function result(err, result){
+            if (err) throw err;
+            res.render(
+            "task.html",
+            {
+                "id": result.insertId || req.body.id,
+                "priority": req.body.priority,
+                "task": req.body.task,
+                "description": req.body.description
+            }
+        );
+        }
+        if (req.body.id){
+            app.settings.mysql.query(
+                "UPDATE tasks " +
+                "SET priority = ?, task = ?, description = ? " +
+                "WHERE id = ?;",
+                [Number(req.body.priority), req.body.task, req.body.description, Number(req.body.id)],
+                result
+            );
+        } else {
+            app.settings.mysql.query(
+                "INSERT INTO tasks (user_id, task, description, priority) " +
+                "VALUES (?, ?, ?, ?);",
+                [Number(req.user.id), req.body.task, req.body.description, Number(req.body.priority)],
+                result
+            );
+        }
+    });
+
     return router;
 }
 

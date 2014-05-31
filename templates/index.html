@@ -3,6 +3,8 @@
     <head>
         <title>Welcome {{ name }}!</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="/js/rule.js"></script>
     </head>
     <body>
         <div><a href="/logout" style="float: right">Разлогиниться!</a></div>
@@ -12,10 +14,13 @@
                     <div id="task">
                         {% include "task.html" %}
                     </div>
+                    <div>
+                        <div onclick="save_task($('#taskform').serialize())">Сохранить/Создать</div>
+                        <div onclick="$('#taskform').find('input[type=text], textarea').val('')">Новая задача</div>
+                    </div>
                 </td>
                 <td style="width: 30%">
                     <div id="tasklist">
-                        {% include "tasklist.html" %}
                     </div>
                 </td>
             </tr>
