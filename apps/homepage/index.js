@@ -16,6 +16,34 @@ function result(app){
         );
     });
 
+    router.post("/task", function(req, res){
+         app.settings.mysql.query(
+            "SELECT * " +
+            "FROM tasks " +
+            "WHERE user_id=? and id=?;",
+            [req.user.id, req.body.id],
+            function (err, result){
+                if(err) throw err;
+                res.render(
+                    "task.html",
+                    result[0]
+                )
+            }
+         );
+    });
+
+    router.post("/finishtask", function(req, res){
+        app.settings.mysql.query(
+            "DELETE FROM tasks " +
+            "WHERE id=? AND user_id=?;",
+            [req.body.id, req.user.id],
+            function(err, result){
+                if(err) throw err;
+                res.send("Done!");
+            }
+        );
+    });
+
     router.get("/tasklist", function(req, res){
         app.settings.mysql.query(
             "SELECT * " +
@@ -25,7 +53,6 @@ function result(app){
             [req.user.id],
             function(err, result){
                 if(err) throw err;
-                console.log(result);
                 res.render(
                     "tasklist.html",
                     {tasklist: result}
@@ -34,7 +61,7 @@ function result(app){
         );
     });
 
-    router.post("/save_task", function(req, res){
+    router.post("/savetask", function(req, res){
         function result(err, result){
             if (err) throw err;
             res.render(
@@ -51,15 +78,15 @@ function result(app){
             app.settings.mysql.query(
                 "UPDATE tasks " +
                 "SET priority = ?, task = ?, description = ? " +
-                "WHERE id = ?;",
-                [Number(req.body.priority), req.body.task, req.body.description, Number(req.body.id)],
+                "WHERE id = ? AND user_id = ?;",
+                [req.body.priority, req.body.task, req.body.description, req.body.id, req.user.id],
                 result
             );
         } else {
             app.settings.mysql.query(
                 "INSERT INTO tasks (user_id, task, description, priority) " +
                 "VALUES (?, ?, ?, ?);",
-                [Number(req.user.id), req.body.task, req.body.description, Number(req.body.priority)],
+                [req.user.id, req.body.task, req.body.description, req.body.priority],
                 result
             );
         }

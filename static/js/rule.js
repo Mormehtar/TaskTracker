@@ -15,7 +15,7 @@ function load_tasklist(){
 function load_task(id){
     $.ajax({
         url: '/task',
-        type: 'GET',
+        type: 'post',
         cache: false,
         data: "id=" + id,
         success: function(data){
@@ -29,7 +29,7 @@ function load_task(id){
 
 function save_task(data){
     $.ajax({
-        url: '/save_task',
+        url: '/savetask',
         type: 'post',
         cache: false,
         data: data,
@@ -45,12 +45,12 @@ function save_task(data){
 
 function finish_task(id){
     $.ajax({
-        url: '/finish_task',
-        type: 'GET',
+        url: '/finishtask',
+        type: 'post',
         cache: false,
         data: "id=" + id,
         success: function(data){
-            $("#task").html(data);
+            load_tasklist();
         }
         , error: function(jqXHR, textStatus, err){
             alert('text status '+textStatus+', err '+err)

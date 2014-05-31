@@ -3,20 +3,21 @@
     <head>
         <title>Welcome {{ name }}!</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link type="text/css" rel="stylesheet" href="/css/main.css">
         <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="/js/rule.js"></script>
     </head>
     <body>
-        <div><a href="/logout" style="float: right">Разлогиниться!</a></div>
+        <div><a class="button" href="/logout" style="float: right">Разлогиниться!</a></div>
         <table style="width: 100%">
             <tr>
                 <td style="width: 70%">
                     <div id="task">
                         {% include "task.html" %}
                     </div>
-                    <div>
-                        <div onclick="save_task($('#taskform').serialize())">Сохранить/Создать</div>
-                        <div onclick="$('#taskform').find('input[type=text], textarea').val('')">Новая задача</div>
+                    <div style="margin: 10px">
+                        <span class="button" onclick="save_task($('#taskform').serialize())">Сохранить/Создать</span>
+                        <span class="button" onclick="$('#taskform').find('input, textarea').val('')">Новая задача</span>
                     </div>
                 </td>
                 <td style="width: 30%">

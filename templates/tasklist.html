@@ -1,3 +1,6 @@
 {% for task in tasklist %}
-    <div onclick="load_task({{ task.id }})">{{ task.priority }}: {{ task.task }}</div>
+    <div class="button">
+        <span style="padding-left: 10px" onclick="load_task({{ task.id }})">{{ task.task }}</span>
+        <span class="delete" onclick="finish_task({{ task.id }})">X</span>
+    </div>
 {% endfor %}
