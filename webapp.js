@@ -68,7 +68,7 @@ app.set("passport", auth);
 
 // Load all enabled applications (look at the config.json)
 config.enabledApps.forEach(function (appName) {
-    app.use(require("./apps/"+appName)(app));
+    app.use(require("./apps/"+appName));
 });
 
 // Enable favicon and static files serving
