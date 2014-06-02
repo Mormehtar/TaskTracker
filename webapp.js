@@ -61,10 +61,7 @@ app.use(session(config.session));
 app.use(bodyParser());
 
 //Auth passport
-var auth = require("./auth.js")(mySqlPool, config);
-app.use(auth.initialize());
-app.use(auth.session());
-app.set("passport", auth);
+require("./apps/auth")(app);
 
 // Load all enabled applications (look at the config.json)
 config.enabledApps.forEach(function (appName) {

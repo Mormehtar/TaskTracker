@@ -2,7 +2,9 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var crypto = require("crypto");
 
-function config (db, config) {
+function config (app) {
+
+    var db = app.settings.mysql, config = app.settings.config;
 
     passport.serializeUser(function(user, done) {
         done(null, user.id);
@@ -42,8 +44,8 @@ function config (db, config) {
                         }
                     } else {
                         return db.query(
-                            "INSERT INTO users (username, password)" +
-                            "VALUES (?, ?)",
+                                "INSERT INTO users (username, password)" +
+                                "VALUES (?, ?)",
                             [username, hashed_password],
                             function(err, rows){
                                 if (err){
@@ -60,7 +62,11 @@ function config (db, config) {
         });
     }));
 
-   return passport
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.set("passport", passport);
+
+    return passport
 }
 
 module.exports = config;
